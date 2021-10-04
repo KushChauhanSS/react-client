@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #80808026;
+  margin: 50px 100px;
+  box-shadow: 5px 5px 5px grey;
+}
+
+.container .childDiv1 {
+  padding: 10px;
+  border-bottom: 1px solid #80808026;
+}
+
+.container .childDiv1 span:nth-child(1) {
+  margin-right: 100px;
+  color: #424949;
+}
+
+.container .childDiv1 span:nth-child(2) {
+  margin-right: 574px;
+  color: #424949;
+}
+
+.container .childDiv1 i {
+  color: #424949;
+}
+
+.container .childDiv2 {
+  display: flex;
+}
+
+.container .childDiv2 .subDiv1 {
+  flex: 1;
+  margin-right: 230px;
+  padding: 10px;
+  color: #424949;
+}
+
+.container .childDiv2 .subDiv2 {
+  flex: 1;
+  padding: 10px;
+  background-color: #ebedef;
+  color: #424949;
+}
