@@ -6,7 +6,7 @@ body {
   min-height: 100vh;
   background-image: url("../images/background/background.jpg");
   background-size: cover;
-  padding: 50px 100px;
+  padding: 50px 0 100px 0;
 }
 
 .main {
@@ -213,4 +213,71 @@ body {
   border-top: 1px solid #d6dbdf;
   font-weight: bold;
   padding-top: 15px;
+}
+
+@media screen and (min-width: 992px) {
+  .main {
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+
+  .main__payement__details__payementblock {
+    flex-basis: 60%;
+  }
+
+  .main__payement__details__cartblock {
+    flex-basis: 40%;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .main {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .main__payement__details__payementblock {
+    flex-basis: 50%;
+  }
+
+  .main__payement__details__cartblock {
+    flex-basis: 50%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main__payement__details__payementblock {
+    flex-basis: 50%;
+  }
+
+  .main__payement__details__cartblock {
+    flex-basis: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main__payement__details {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .cardDetails {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .main__payment__header span:nth-child(2) {
+    display: none;
+  }
+
+  .main__payment__header span:nth-child(3) {
+    display: none;
+  }
+  .main__payment__header span:nth-child(4) {
+    display: none;
+  }
 }
