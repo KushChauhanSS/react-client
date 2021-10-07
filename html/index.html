@@ -2,20 +2,113 @@
 <html>
     <head>
         <title>Html And Css</title>
-        <link rel="stylesheet" href="./css/style.css">
         <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+        <link rel="stylesheet" href="./css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <div class="main">
             <div class="main__payment__header">
-                <span><b>Checkout</b></span>
-                <span>Shipping / <b>Payment Method</b> / Confirmation</span>
-                <i class="fa fa-window-close fa-lg" aria-hidden="true"></i>
+                <span>Checkout</span>
+                <span>Shipping</span>
+                <span>Payment Method</span>
+                <span>Confirmation</span>
+                <span><i class="fa fa-window-close" aria-hidden="true"></i></span>
             </div>
-            <div class="main__payment__section">
-                <div class="payment__section__paymentblock">Payment Block</div>
-                <div class="payment__section__cartblock">Cart Block</div>
+            <div class="main__payement__details">
+                <div class="main__payement__details__payementblock">
+                    <h4 class="heading">Wallet</h4>
+                    <div class="cardDetails">
+                        <div class="cardDetails__card">
+                            <img src="./images/cards/discover.png" alt="Discover Card">
+                            <small>Ending with 8899</small>
+                        </div>
+                        <div class="cardDetails__card">
+                            <img src="./images/cards/mastercard.png" alt="Master Card">
+                            <small>Ending with 8899</small>
+                        </div>
+                        <div class="cardDetails__card">
+                            <img src="./images/cards/visa.png" alt="Visa Card">
+                            <small>Ending with 8899</small>
+                        </div>
+                    </div>
+                    <h4 class="heading">New Card</h4>
+                    <div class="newCardDetails">
+                        <form class="newCardDetails__form">
+                            <input class="newCardDetails__form__input" type="text" name="cardName" placeholder="Name on Card">
+                            <input class="newCardDetails__form__input" type="text" name="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX">
+                            <div class="newCardDetails__form__cvvDetails">
+                                <input type="text" name="expDate" placeholder="MM/YY">
+                                <input type="text" name="cardCvv" placeholder="CVV">
+                            </div>
+                            <input class="newCardDetails__form__input input--button" type="button" value="CONTINUE">
+                        </form>
+                    </div>
+                </div>
+                <div class="main__payement__details__cartblock">
+                    <div class="cartblock__product">
+                        <div class="cartblock__product__item">
+                            <img src="./images/products/mobile-holder.jpg" alt="Mobile Holder">
+                            <div class="cartblock__product__info">
+                                <h4>Mobile Holder</h4>
+                                <small>Black</small>
+                                <small class="productQuantity">Quantity:<span>1</span></small>
+                            </div>
+                        </div>
+                        <p>$ 10.00</p>
+                    </div>
+                    <div class="cartblock__product">
+                        <div class="cartblock__product__item">
+                            <img src="./images/products/rado.jpg" alt="Mobile Holder">
+                            <div class="cartblock__product__info">
+                                <h4>Rado Watch</h4>
+                                <small>Black</small>
+                                <small class="productQuantity">Quantity:<span>1</span></small>
+                            </div>
+                        </div>
+                        <p>$ 10.00</p>
+                    </div>
+                    <div class="cartblock__product">
+                        <div class="cartblock__product__item">
+                            <img src="./images/products/usb-c-2-micro.jpeg" alt="Mobile Holder">
+                            <div class="cartblock__product__info">
+                                <h4>C type to Micro Converter</h4>
+                                <small>Black</small>
+                                <small class="productQuantity">Quantity:<span>1</span></small>
+                            </div>
+                        </div>
+                        <p>$ 10.00</p>
+                    </div>
+                    <div class="cartblock__product">
+                        <div class="cartblock__product__item">
+                            <img src="./images/products/hard-case.jpg" alt="Mobile Holder">
+                            <div class="cartblock__product__info">
+                                <h4>Mobile Case</h4>
+                                <small>Black</small>
+                                <small class="productQuantity">Quantity:<span>1</span></small>
+                            </div>
+                        </div>
+                        <p>$ 10.00</p>
+                    </div>
+                    <div class="cartblock__bill">
+                        <div class="cartblock__bill__amount">
+                            <small>Sub Total</small>
+                            <small>$ 100.00</small>
+                        </div>
+                        <div class="cartblock__bill__amount">
+                            <small>Shipping</small>
+                            <small>$ 10.00</small>
+                        </div>
+                        <div class="cartblock__bill__amount">
+                            <small>Taxes</small>
+                            <small>$ 5.00</small>
+                        </div>
+                        <div class="cartblock__bill__amount">
+                            <small>Total</small>
+                            <small>$ 115.00</small>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
