@@ -8,20 +8,11 @@ const TextField = (props) => {
     heading, value, error, disabled,
   } = props;
 
-  let inputStyle;
-
-  if (disabled) {
-    inputStyle = styles.diabledInput;
-  } else if (!disabled && !error) {
-    inputStyle = styles.validInput;
-  } else {
-    inputStyle = styles.inputWithErrors;
-  }
   return (
     <>
       <h4 style={styles.heading}>{heading}</h4>
       <input
-        style={inputStyle}
+        style={error ? { ...styles.basicInput, ...styles.inputWithErrors } : styles.basicInput}
         type="text"
         name="inputField"
         value={value}
@@ -37,7 +28,7 @@ TextField.propTypes = {
   heading: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,
-  disabled: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default TextField;
