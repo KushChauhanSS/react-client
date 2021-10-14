@@ -30,7 +30,7 @@ const InputDemo = () => {
     if (playerData.sport === CRICKET) {
       setPlayerData({ ...playerData, cricket: value });
     } else {
-      setPlayerData({ ...playerData, football: 5 });
+      setPlayerData({ ...playerData, football: value });
     }
   };
 
