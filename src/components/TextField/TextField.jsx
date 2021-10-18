@@ -5,22 +5,22 @@ import './style.css';
 
 const TextField = (props) => {
   const {
-    heading, value, error, disabled, onChange,
+    heading, value, error, disabled, onChange, onBlur,
   } = props;
-
   return (
     <>
       <h4 style={styles.heading}>{heading}</h4>
       <input
         style={error ? { ...styles.basicInput, ...styles.inputWithErrors } : styles.basicInput}
         type="text"
-        name="inputField"
+        name="name"
         value={value}
         error={error}
         disabled={disabled}
         onChange={onChange}
+        onBlur={onBlur}
       />
-      {error && <p style={styles.errorMessage}>{error}</p>}
+      {error.length > 0 && <p style={styles.errorMessage}>{error}</p>}
     </>
   );
 };
@@ -36,6 +36,7 @@ TextField.propTypes = {
   error: PropTypes.string,
   disabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 export default TextField;
