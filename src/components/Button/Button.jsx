@@ -14,7 +14,7 @@ const Button = (props) => {
   return (
     <button
       type={value === 'Submit' ? 'submit' : 'button'}
-      style={color === 'default' || (color === 'primary' && disabled === true) ? { ...styles.basicButton, ...style } : { ...styles.basicButton, ...styles.buttonEnabled, ...style }}
+      style={(color === 'primary' && disabled === false) ? { ...styles.basicButton, ...styles.buttonPrimary, ...style } : { ...styles.basicButton, ...style }}
       disabled={disabled}
       onClick={onClick}
     >
