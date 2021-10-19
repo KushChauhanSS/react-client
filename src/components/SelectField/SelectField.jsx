@@ -7,6 +7,7 @@ const SelectField = (props) => {
     error,
     value,
     onChange,
+    onBlur,
     options,
     defaultText,
   } = props;
@@ -14,13 +15,14 @@ const SelectField = (props) => {
     <>
       <label className="selectFieldLabel" htmlFor="game">
         Select the game you play?
-        <select className="selectGame" name="game" id="game" error={error} onChange={onChange} value={value}>
+        <select className={error.length > 0 ? 'selectWithError' : 'selectGame'} name="sport" id="game" value={value} onChange={onChange} onBlur={onBlur}>
           <option value="">{defaultText}</option>
           {options.map((game) => (
             <option key={game.value} value={game.value}>{game.label}</option>
           ))}
         </select>
       </label>
+      {error.length > 0 && <p className="errorMessage">{error}</p>}
     </>
   );
 };
@@ -35,6 +37,7 @@ SelectField.propTypes = {
   error: PropTypes.string,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.object),
   defaultText: PropTypes.string,
 };
