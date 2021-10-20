@@ -7,7 +7,7 @@ import {
 } from '../../components';
 import { OPTIONS, CRICKET } from '../../configs/constants';
 import { validationSchema } from '../../validations/validation';
-import { hasErrors, isTouched, getError } from '../../helpers/helper';
+import { hasErrors, isTouched, getError } from './helper';
 import { styles } from './style';
 
 const InputDemo = () => {

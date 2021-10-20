@@ -6,3 +6,30 @@ export const validationSchema = yup.object().shape({
   cricket: yup.string().min(1),
   football: yup.string().min(1),
 });
+
+export const traineeFormValidationSchema = yup.object().shape({
+  name: yup
+    .string()
+    .min(3)
+    .max(20)
+    .label('Name')
+    .required(),
+  email: yup
+    .string()
+    .email()
+    .label('Email Address')
+    .required(),
+  password: yup
+    .string()
+    .label('Password')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+      'Must contain 8 characters, atleast one uppercase, one lowercase and one number',
+    )
+    .required(),
+  confirmPassword: yup
+    .string()
+    .label('Confirm Password')
+    .oneOf([yup.ref('password'), null], 'Must match password')
+    .required('Confirm Password is required'),
+});
