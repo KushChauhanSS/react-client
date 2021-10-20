@@ -11,7 +11,6 @@ const SelectField = (props) => {
     options,
     defaultText,
   } = props;
-  console.log('error.length', error.length);
   return (
     <>
       <label className="selectFieldLabel" htmlFor="game">

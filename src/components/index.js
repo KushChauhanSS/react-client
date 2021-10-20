@@ -1,6 +1,6 @@
-export { TextField } from './TextField/index';
-export { Slider } from './Slider/index';
-export { SelectField } from './SelectField/index';
-export { RadioGroup } from './RadioGroup/index';
-export { Button } from './Button/index';
-export { Math } from './Math/index';
+export { TextField } from './TextField';
+export { Slider } from './Slider';
+export { SelectField } from './SelectField';
+export { RadioGroup } from './RadioGroup';
+export { Button } from './Button';
+export { Math } from './Math';

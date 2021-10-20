@@ -1,10 +1,7 @@
 export const hasErrors = (data) => {
   const fields = Object.keys(data);
   const errors = fields.map((field) => data[field].hasErrors);
-  if (errors.includes(true)) {
-    return true;
-  }
-  return false;
+  return errors.includes(true);
 };
 
 export const isTouched = (data) => {

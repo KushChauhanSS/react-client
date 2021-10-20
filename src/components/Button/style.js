@@ -6,7 +6,7 @@ export const styles = {
     background: '#dcdcdc',
     fontWeight: 'bold',
   },
-  buttonEnabled: {
+  buttonPrimary: {
     border: 'none',
     background: '#26bf52',
     color: 'white',
