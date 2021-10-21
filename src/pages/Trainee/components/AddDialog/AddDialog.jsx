@@ -28,7 +28,7 @@ const AddDialog = (props) => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={onClick}>
+      <Button variant="outlined" onClick={onClick} sx={{ m: '0.5rem' }}>
         ADD TRAINEE
       </Button>
       <Dialog open={open} onClose={onClose} fullWidth="true" maxWidth="100px">
@@ -48,12 +48,12 @@ const AddDialog = (props) => {
               style: { fontSize: 20 },
               startAdornment: (
                 <InputAdornment position="start">
-                  <PersonIcon fontSize="22px" color="grey" sx={{ color: '#212121' }} />
+                  <PersonIcon sx={{ color: '#212121', fontSize: '22px' }} />
                 </InputAdornment>
               ),
             }}
             InputLabelProps={{ style: { fontSize: 20 } }}
-            sx={{ marginTop: '1rem' }}
+            sx={{ mt: '1rem' }}
             onChange={onChange}
             onBlur={onBlur}
             error={(data.errors.name && data.touched.name)}
@@ -76,7 +76,7 @@ const AddDialog = (props) => {
               ),
             }}
             InputLabelProps={{ style: { fontSize: 20 } }}
-            sx={{ marginTop: '1rem' }}
+            sx={{ mt: '1rem' }}
             onChange={onChange}
             onBlur={onBlur}
             error={(data.errors.email && data.touched.email)}
@@ -94,12 +94,12 @@ const AddDialog = (props) => {
                 style: { fontSize: 20 },
                 startAdornment: (
                   <InputAdornment position="start">
-                    <VisibilityOffIcon fontSize="22px" sx={{ color: '#212121' }} />
+                    <VisibilityOffIcon sx={{ color: '#212121', fontSize: '22px' }} />
                   </InputAdornment>
                 ),
               }}
               InputLabelProps={{ style: { fontSize: 20 } }}
-              sx={{ width: 1 / 2, paddingRight: '0.5rem', marginTop: '1rem' }}
+              sx={{ width: 1 / 2, pr: '0.5rem', mt: '1rem' }}
               onChange={onChange}
               onBlur={onBlur}
               error={(data.errors.password && data.touched.password)}
@@ -116,12 +116,12 @@ const AddDialog = (props) => {
                 style: { fontSize: 20 },
                 startAdornment: (
                   <InputAdornment position="start">
-                    <VisibilityOffIcon fontSize="22px" sx={{ color: '#212121' }} />
+                    <VisibilityOffIcon sx={{ color: '#212121', fontSize: '22px' }} />
                   </InputAdornment>
                 ),
               }}
               InputLabelProps={{ style: { fontSize: 20 } }}
-              sx={{ width: 1 / 2, marginTop: '1rem' }}
+              sx={{ width: 1 / 2, mt: '1rem' }}
               onChange={onChange}
               onBlur={onBlur}
               error={(data.errors.confirmPassword && data.touched.confirmPassword)}
