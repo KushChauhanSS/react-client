@@ -23,41 +23,22 @@ const Math = (props) => {
     if (operatorArgs === '/') {
       return operand1 / operand2;
     }
-    return 'Invalid Operator';
+    return 'Invalid Operation';
   };
 
   const result = evaluateResult(first, second, operator);
 
   return (
     <Typography>
-      {children({
+      {children ? children({
         first, second, operator, result,
-      })}
+      }) : `${first} ${operator} ${second} = ${result}`}
     </Typography>
   );
 };
 
-const defaultTemplate = (obj) => {
-  if (obj.operator === '+') {
-    return `${obj.first} + ${obj.second} = ${obj.result}`;
-  }
-  if (obj.operator === '-') {
-    return `${obj.first} - ${obj.second} = ${obj.result}`;
-  }
-  if (obj.operator === '*') {
-    return `${obj.first} * ${obj.second} = ${obj.result}`;
-  }
-  if (obj.second === 0 && obj.operator === '/') {
-    return `${obj.first} / ${obj.second} = ${obj.result}`;
-  }
-  if (obj.operator === '/') {
-    return `${obj.first} / ${obj.second} = ${obj.result}`;
-  }
-  return `Invalid Operation : ${obj.operator}`;
-};
-
 Math.defaultProps = {
-  children: defaultTemplate,
+  children: null,
 };
 
 Math.propTypes = {
