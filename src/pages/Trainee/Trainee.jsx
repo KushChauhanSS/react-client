@@ -35,7 +35,7 @@ const Trainee = () => {
   const validateFormData = async (value, type) => {
     try {
       await traineeFormValidationSchema.validate({
-        ...formValue, [type]: formValue[type],
+        ...formValue, [type]: value,
       }, {
         abortEarly: false,
       });
@@ -61,7 +61,7 @@ const Trainee = () => {
     }
   };
 
-  const handleChange = async (event) => {
+  const handleChange = (event) => {
     const { value, name: type } = event.target;
     validateFormData(value, type);
   };
