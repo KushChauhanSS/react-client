@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -12,7 +13,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
-import { styles } from './style';
 import { hasErrors, isTouched } from '../../helper';
 
 const AddDialog = (props) => {
@@ -28,10 +28,10 @@ const AddDialog = (props) => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={onClick} sx={{ m: '0.5rem' }}>
+      <Button variant="outlined" onClick={onClick} sx={{ mx: '0.5rem' }}>
         ADD TRAINEE
       </Button>
-      <Dialog open={open} onClose={onClose} fullWidth="true" maxWidth="100px">
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" sx={{ mt: '8rem' }}>
         <DialogTitle>Add Trainee</DialogTitle>
         <DialogContent>
           <DialogContentText>Enter your trainee details</DialogContentText>
@@ -82,7 +82,7 @@ const AddDialog = (props) => {
             error={(data.errors.email && data.touched.email)}
             helperText={data.touched.email && data.errors.email}
           />
-          <div style={styles.passwordContainer}>
+          <Box>
             <TextField
               margin="dense"
               type="password"
@@ -127,7 +127,7 @@ const AddDialog = (props) => {
               error={(data.errors.confirmPassword && data.touched.confirmPassword)}
               helperText={data.touched.confirmPassword && data.errors.confirmPassword}
             />
-          </div>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>

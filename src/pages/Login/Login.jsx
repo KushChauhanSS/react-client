@@ -6,6 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Link } from 'react-router-dom';
 
 import { styles } from './style';
 import { loginFormValidationSchema } from '../../validations/validation';
@@ -123,9 +124,11 @@ const Login = () => {
           error={(loginFormData.errors.password && loginFormData.touched.password)}
           helperText={loginFormData.touched.password && loginFormData.errors.password}
         />
-        <Button variant="contained" disabled={!(!hasErrors(loginFormData) && isTouched(loginFormData))} fullWidth sx={{ mt: '2.4rem' }}>
-          Sign In
-        </Button>
+        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+          <Button variant="contained" disabled={!(!hasErrors(loginFormData) && isTouched(loginFormData))} fullWidth sx={{ mt: '2.4rem' }}>
+            Sign In
+          </Button>
+        </Link>
       </Paper>
     </Grid>
   );

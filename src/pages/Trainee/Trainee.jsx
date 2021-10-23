@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { AddDialog } from './components';
-import { NavBar } from '../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
 
 const Trainee = () => {
@@ -75,7 +74,6 @@ const Trainee = () => {
 
   return (
     <>
-      <NavBar />
       <AddDialog
         open={open}
         onClick={handleClickOpen}
