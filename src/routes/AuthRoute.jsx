@@ -4,12 +4,9 @@ import { Route } from 'react-router-dom';
 
 import { AuthLayout } from '../layouts';
 
-const AuthRoute = (props) => {
-  const { exact, path, component: Component } = props;
-  return (
-    <Route exact={exact} path={path} render={() => <AuthLayout><Component /></AuthLayout>} />
-  );
-};
+const AuthRoute = ({ exact, path, component: Component }) => (
+  <Route exact={exact} path={path} render={() => <AuthLayout><Component /></AuthLayout>} />
+);
 
 AuthRoute.propTypes = {
   exact: PropTypes.bool.isRequired,
