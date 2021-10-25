@@ -17,7 +17,7 @@ const Navbar = () => (
         >
           Trainee Portal
         </Typography>
-        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+        <Link to="/trainee" style={{ color: 'white', textDecoration: 'none' }}>
           <Button color="inherit" sx={{ fontSize: '0.9rem' }}>Trainee</Button>
         </Link>
         <Link to="/text-field-demo" style={{ color: 'white', textDecoration: 'none' }}>

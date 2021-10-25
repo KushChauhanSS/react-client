@@ -83,7 +83,7 @@ const Login = () => {
           type="email"
           name="email"
           value={loginFormData.email}
-          id="outlined-required"
+          id="outlined-required-name-field"
           label="Email Address"
           fullWidth
           InputProps={{
@@ -106,7 +106,7 @@ const Login = () => {
           type="password"
           name="password"
           value={loginFormData.password}
-          id="outlined-required"
+          id="outlined-required-email-field"
           label="Password"
           fullWidth
           InputProps={{
@@ -124,7 +124,7 @@ const Login = () => {
           error={(loginFormData.errors.password && loginFormData.touched.password)}
           helperText={loginFormData.touched.password && loginFormData.errors.password}
         />
-        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+        <Link to="/trainee" style={{ color: 'white', textDecoration: 'none' }}>
           <Button variant="contained" disabled={!(!hasErrors(loginFormData) && isTouched(loginFormData))} fullWidth sx={{ mt: '2.4rem' }}>
             Sign In
           </Button>
