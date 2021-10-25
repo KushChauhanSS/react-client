@@ -24,7 +24,7 @@ function App() {
             <PrivateRoute exact path="/text-field-demo" component={TextFieldDemo} />
             <PrivateRoute exact path="/input-demo" component={InputDemo} />
             <PrivateRoute exact path="/children-demo" component={ChildrenDemo} />
-            <PrivateRoute component={NotFound} />
+            <PrivateRoute path="*" component={NotFound} />
           </Switch>
         </div>
       </ThemeProvider>
