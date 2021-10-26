@@ -1,6 +1,9 @@
+// Constants for Slider Component
 export const PUBLIC_IMAGE_FOLDER = '/images/';
 export const DEFAULT_BANNER_IMAGE = 'banners/default.png';
 export const BANNERS = ['cloud.jpg', 'dns-server.png', 'full-stack-web-development.jpg', 'js.jpg', 'load-balancer.png'];
+
+// Constants for SlectField Component
 export const OPTIONS = [
   {
     value: 'cricket',
@@ -41,6 +44,7 @@ export const OPTIONS = [
 ];
 export const CRICKET = 'cricket';
 
+// Constant for GenricTable component
 export const columnsData = [
   {
     field: 'name',
