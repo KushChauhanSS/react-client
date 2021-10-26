@@ -40,3 +40,15 @@ export const OPTIONS = [
   },
 ];
 export const CRICKET = 'cricket';
+
+export const columnsData = [
+  {
+    field: 'name',
+    label: 'Name',
+    align: 'center',
+  },
+  {
+    field: 'email',
+    label: 'Email Address',
+  },
+];
