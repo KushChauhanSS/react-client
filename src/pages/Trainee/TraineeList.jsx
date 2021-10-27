@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
 import { AddDialog } from './components';
 import { GenericTable } from '../../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
-import { columnsData } from '../../configs/constants';
 import trainees from './data/trainee';
+
+const getFormattedDate = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+
+// columns data for GenricTable component
+const columnsData = [
+  {
+    field: 'name',
+    label: 'Name',
+  },
+  {
+    field: 'email',
+    label: 'Email Address',
+    format: (value) => value && value.toUpperCase(),
+  },
+  {
+    field: 'createdAt',
+    label: 'Date',
+    align: 'right',
+    format: getFormattedDate,
+  },
+];
 
 const TraineeList = () => {
   const initialState = {
@@ -23,6 +44,10 @@ const TraineeList = () => {
   };
   const [open, setOpen] = useState(false);
   const [formValue, setFormValue] = useState(initialState);
+  const [orderBy, setOrderBy] = useState('');
+  const [order, setOrder] = useState('asc');
+
+  const history = useHistory();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,6 +101,20 @@ const TraineeList = () => {
     validateFormData(value, type);
   };
 
+  const handleSort = (field) => {
+    if (orderBy === field) {
+      setOrder(order === 'desc' ? 'asc' : 'desc');
+    } else {
+      setOrderBy(field);
+      setOrder('asc');
+    }
+  };
+
+  const handleSelect = (id) => {
+    // navigating to the specific route
+    history.push(`/trainee/${id}`);
+  };
+
   return (
     <>
       <AddDialog
@@ -87,12 +126,15 @@ const TraineeList = () => {
         onBlur={handleBlur}
         data={formValue}
       />
-      <GenericTable id="61598424fbfdfec65e2dd36b" data={trainees} columns={columnsData} />
-      <ul>
-        {trainees.map((item) => (
-          <li key={item.id}><Link to={`/trainee/${item.id}`}>{item.name}</Link></li>
-        ))}
-      </ul>
+      <GenericTable
+        id="61598424fbfdfec65e2dd36b"
+        data={trainees}
+        columns={columnsData}
+        orderBy={orderBy}
+        order={order}
+        onSort={handleSort}
+        onSelect={handleSelect}
+      />
     </>
   );
 };
