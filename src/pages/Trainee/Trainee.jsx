@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import { AddDialog } from './components';
+import { NavBar } from '../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
 
 const Trainee = () => {
@@ -71,18 +73,19 @@ const Trainee = () => {
     validateFormData(value, type);
   };
 
-  console.log('formValue', formValue);
-
   return (
-    <AddDialog
-      open={open}
-      onClick={handleClickOpen}
-      onClose={handleClose}
-      onSubmit={handleSubmit}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      data={formValue}
-    />
+    <>
+      <NavBar />
+      <AddDialog
+        open={open}
+        onClick={handleClickOpen}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        data={formValue}
+      />
+    </>
   );
 };
 
