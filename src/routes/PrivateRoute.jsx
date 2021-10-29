@@ -5,7 +5,11 @@ import { Route } from 'react-router-dom';
 import { PrivateLayout } from '../layouts';
 
 const PrivateRoute = ({ exact, path, component: Component }) => (
-  <Route exact={exact} path={path} render={() => <PrivateLayout><Component /></PrivateLayout>} />
+  <Route
+    exact={exact}
+    path={path}
+    render={() => <PrivateLayout><Component exact={exact} path={path} /></PrivateLayout>}
+  />
 );
 
 PrivateRoute.defaultProps = {

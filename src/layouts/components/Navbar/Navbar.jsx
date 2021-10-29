@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const navbarData = [
   {
     buttonLabel: 'Trainee',
-    url: '/',
+    url: '/trainee',
   },
   {
     buttonLabel: 'Textfield Demo',
