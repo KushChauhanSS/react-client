@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AddDialog } from './components';
+import { GenericTable } from '../../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
+import { columnsData } from '../../configs/constants';
 import trainees from './data/trainee';
 
 const TraineeList = () => {
@@ -85,6 +87,7 @@ const TraineeList = () => {
         onBlur={handleBlur}
         data={formValue}
       />
+      <GenericTable id="61598424fbfdfec65e2dd36b" data={trainees} columns={columnsData} />
       <ul>
         {trainees.map((item) => (
           <li key={item.id}><Link to={`/trainee/${item.id}`}>{item.name}</Link></li>
