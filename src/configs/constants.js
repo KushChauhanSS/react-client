@@ -43,16 +43,3 @@ export const OPTIONS = [
   },
 ];
 export const CRICKET = 'cricket';
-
-// Constant for GenricTable component
-export const columnsData = [
-  {
-    field: 'name',
-    label: 'Name',
-    align: 'center',
-  },
-  {
-    field: 'email',
-    label: 'Email Address',
-  },
-];
