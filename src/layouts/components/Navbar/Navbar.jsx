@@ -29,10 +29,16 @@ const navbarData = [
   },
 ];
 
+const handleClick = (label) => {
+  if (label === 'Logout') {
+    window.localStorage.removeItem('token');
+  }
+};
+
 const AddNavbarData = ({ data }) => (
   data.map((item) => (
     <Link key={item.buttonLabel} to={item.url} style={{ color: 'white', textDecoration: 'none' }}>
-      <Button color="inherit" sx={{ fontSize: '0.9rem' }}>{item.buttonLabel}</Button>
+      <Button color="inherit" sx={{ fontSize: '0.9rem' }} onClick={() => handleClick(item.buttonLabel)}>{item.buttonLabel}</Button>
     </Link>
   ))
 );
