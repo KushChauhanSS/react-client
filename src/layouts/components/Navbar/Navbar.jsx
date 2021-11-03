@@ -6,6 +6,37 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
+const navbarData = [
+  {
+    buttonLabel: 'Trainee',
+    url: '/trainee',
+  },
+  {
+    buttonLabel: 'Textfield Demo',
+    url: '/text-field-demo',
+  },
+  {
+    buttonLabel: 'Inputfield Demo',
+    url: '/input-demo',
+  },
+  {
+    buttonLabel: 'Children Demo',
+    url: '/children-demo',
+  },
+  {
+    buttonLabel: 'Logout',
+    url: '/login',
+  },
+];
+
+const AddNavbarData = ({ data }) => (
+  data.map((item) => (
+    <Link key={item.buttonLabel} to={item.url} style={{ color: 'white', textDecoration: 'none' }}>
+      <Button color="inherit" sx={{ fontSize: '0.9rem' }}>{item.buttonLabel}</Button>
+    </Link>
+  ))
+);
+
 const Navbar = () => (
   <Box sx={{ flexGrow: 1 }}>
     <AppBar position="static">
@@ -17,21 +48,7 @@ const Navbar = () => (
         >
           Trainee Portal
         </Typography>
-        <Link to="/trainee" style={{ color: 'white', textDecoration: 'none' }}>
-          <Button color="inherit" sx={{ fontSize: '0.9rem' }}>Trainee</Button>
-        </Link>
-        <Link to="/text-field-demo" style={{ color: 'white', textDecoration: 'none' }}>
-          <Button color="inherit" sx={{ fontSize: '0.9rem' }}>Textfield Demo</Button>
-        </Link>
-        <Link to="/input-demo" style={{ color: 'white', textDecoration: 'none' }}>
-          <Button color="inherit" sx={{ fontSize: '0.9rem' }}>Inputfield Demo</Button>
-        </Link>
-        <Link to="/children-demo" style={{ color: 'white', textDecoration: 'none' }}>
-          <Button color="inherit" sx={{ fontSize: '0.9rem' }}>Children Demo</Button>
-        </Link>
-        <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>
-          <Button color="inherit" sx={{ fontSize: '0.9rem', ml: '1.5rem' }}>Logout</Button>
-        </Link>
+        <AddNavbarData data={navbarData} />
       </Toolbar>
     </AppBar>
   </Box>
