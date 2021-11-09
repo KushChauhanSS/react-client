@@ -15,6 +15,7 @@ import {
 import { withStyles } from '@mui/styles';
 
 import { styles } from './style';
+import { withLoaderAndMessage } from '../HOC';
 
 const GenericTable = ({
   id,
@@ -55,14 +56,14 @@ const GenericTable = ({
           {data.map((item) => (
             <TableRow
               className={classes.tableBodyRow}
-              key={item.id + id}
+              key={item.originalId + id}
             >
               {columns.map((columnData) => (
                 <TableCell
                   className={classes.tableBodyRowCell}
                   key={columnData.field + item.id}
                   align={columnData.align}
-                  onClick={() => onSelect(item.id)}
+                  onClick={() => onSelect(item.originalId)}
                 >
                   {columnData.format
                     ? columnData.format(item[columnData.field])
@@ -129,4 +130,4 @@ GenericTable.propTypes = {
   onChangePage: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(GenericTable);
+export default withLoaderAndMessage(withStyles(styles)(GenericTable));

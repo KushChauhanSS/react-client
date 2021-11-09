@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,9 +12,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { LoadingButton } from '@mui/lab';
 
 import { hasErrors, isTouched } from '../../helper';
 import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
+import { callAPi } from '../../../../libs/utils/api';
 
 const AddDialog = (props) => {
   const {
@@ -27,11 +29,31 @@ const AddDialog = (props) => {
     data,
   } = props;
 
+  const [loading, setLoading] = useState(false);
+
   const openSnackBar = useContext(SnackBarContext);
 
-  const handleSubmitClick = () => {
-    openSnackBar('This is a success message!', 'success');
-    onSubmit();
+  const handleSubmitClick = async () => {
+    try {
+      setLoading(true);
+      await callAPi(
+        'users',
+        'post',
+        { Authorization: window.localStorage.getItem('token') },
+        null,
+        {
+          name: data.name, email: data.email, role: 'head-trainer', password: data.password,
+        },
+      );
+      setLoading(false);
+      onClose();
+      openSnackBar('Trainee added successfully', 'success');
+      onSubmit();
+    } catch (error) {
+      setLoading(false);
+      onClose();
+      openSnackBar(error.message, 'error');
+    }
   };
 
   return (
@@ -139,7 +161,9 @@ const AddDialog = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSubmitClick} variant="contained" disabled={!(!hasErrors(data) && isTouched(data))}>Submit</Button>
+          <LoadingButton loading={loading} variant="contained" disabled={!(!hasErrors(data) && isTouched(data))} onClick={handleSubmitClick}>
+            Submit
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </div>
