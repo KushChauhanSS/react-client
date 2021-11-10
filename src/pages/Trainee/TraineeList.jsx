@@ -198,7 +198,12 @@ const TraineeList = () => {
   // Select table row handler
   const handleSelect = (id) => {
     // navigating to the specific route
-    history.push(`/trainee/${id}`);
+    history.push({
+      pathname: `/trainee/${id}`,
+      state: {
+        response: tableData,
+      },
+    });
   };
 
   // Page change handler
