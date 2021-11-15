@@ -221,6 +221,7 @@ const TraineeList = () => {
         open={openDeleteDialog}
         onClose={handleRemoveDialogClose}
         onDelete={handleDelete}
+        actionState={actionState}
       />
     </>
   );

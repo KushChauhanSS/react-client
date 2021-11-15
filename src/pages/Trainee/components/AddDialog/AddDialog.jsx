@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,6 +14,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import { hasErrors, isTouched } from '../../helper';
+import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 const AddDialog = (props) => {
   const {
@@ -25,6 +26,13 @@ const AddDialog = (props) => {
     onBlur,
     data,
   } = props;
+
+  const openSnackBar = useContext(SnackBarContext);
+
+  const handleSubmitClick = () => {
+    openSnackBar('This is a success message!', 'success');
+    onSubmit();
+  };
 
   return (
     <div>
@@ -131,7 +139,7 @@ const AddDialog = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={onSubmit} variant="contained" disabled={!(!hasErrors(data) && isTouched(data))}>Submit</Button>
+          <Button onClick={handleSubmitClick} variant="contained" disabled={!(!hasErrors(data) && isTouched(data))}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>
