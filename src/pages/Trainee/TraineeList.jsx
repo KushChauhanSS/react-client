@@ -3,12 +3,13 @@ import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useLazyQuery } from '@apollo/client';
 
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import { GenericTable } from '../../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
-import { callAPi } from '../../libs/utils/api';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { GET_TRAINEES } from './query';
 
 const getFormattedDate = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
@@ -74,6 +75,8 @@ const TraineeList = () => {
   const openSnackBar = useContext(SnackBarContext);
 
   const history = useHistory();
+
+  const [getTrainees] = useLazyQuery(GET_TRAINEES);
 
   const validateFormData = async (value, type) => {
     try {
@@ -206,14 +209,10 @@ const TraineeList = () => {
   useEffect(async () => {
     try {
       setLoading(true);
-      const response = await callAPi(
-        'users/all',
-        'get',
-        { Authorization: window.localStorage.getItem('token') },
-        limitSkipValue,
-        null,
+      const response = await getTrainees(
+        { variables: { limit: limitSkipValue.limit, skip: limitSkipValue.skip } },
       );
-      const { data: { result: { documents, userData } } } = response;
+      const { data: { getAllTrainees: { result: { documents, userData } } } } = response;
       setLoading(false);
       setDataLength(userData.length);
       setCount(documents);

@@ -9,12 +9,12 @@ import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from './mutation';
 
 import { styles } from './style';
 import { loginFormValidationSchema } from '../../validations/validation';
 import { hasErrors, isTouched } from './helper';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { LOGIN_USER } from './mutation';
 
 const Login = () => {
   const initialState = {
