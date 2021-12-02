@@ -9,9 +9,11 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { useMutation } from '@apollo/client';
 
 import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
-import { callAPi } from '../../../../libs/utils/api';
+import { DELETE_TRAINEE } from '../../mutation';
+import { GET_TRAINEES } from '../../query';
 
 const RemoveDialog = (props) => {
   const {
@@ -22,15 +24,13 @@ const RemoveDialog = (props) => {
 
   const openSnackBar = useContext(SnackBarContext);
 
+  const [removeTrainee] = useMutation(DELETE_TRAINEE, { refetchQueries: [GET_TRAINEES] });
+
   const handleDeleteClick = async () => {
     try {
       setLoading(true);
-      await callAPi(
-        `users/${actionState.originalId}`,
-        'delete',
-        { Authorization: window.localStorage.getItem('token') },
-        null,
-        null,
+      await removeTrainee(
+        { variables: { id: actionState.originalId } },
       );
       setLoading(false);
       onClose();

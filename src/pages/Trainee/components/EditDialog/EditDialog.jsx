@@ -13,9 +13,11 @@ import {
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import { LoadingButton } from '@mui/lab';
+import { useMutation } from '@apollo/client';
 
 import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
-import { callAPi } from '../../../../libs/utils/api';
+import { UPDATE_TRAINEE } from '../../mutation';
+import { GET_TRAINEES } from '../../query';
 
 const EditDialog = (props) => {
   const {
@@ -26,17 +28,14 @@ const EditDialog = (props) => {
 
   const openSnackBar = useContext(SnackBarContext);
 
+  const [editTrainee] = useMutation(UPDATE_TRAINEE, { refetchQueries: [GET_TRAINEES] });
+
   const handleSubmitClick = async () => {
     try {
       setLoading(true);
-      await callAPi(
-        'users',
-        'put',
-        { Authorization: window.localStorage.getItem('token') },
-        null,
-        {
-          originalId: value.originalId, name: value.name, email: value.email,
-        },
+      const { originalId, name, email } = value;
+      await editTrainee(
+        { variables: { originalId, name, email } },
       );
       setLoading(false);
       onClose();

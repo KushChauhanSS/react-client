@@ -76,7 +76,10 @@ const TraineeList = () => {
 
   const history = useHistory();
 
-  const [getTrainees] = useLazyQuery(GET_TRAINEES);
+  const [getTrainees] = useLazyQuery(GET_TRAINEES, {
+    variables: { limit: limitSkipValue.limit, skip: limitSkipValue.skip },
+    fetchPolicy: 'cache-and-network',
+  });
 
   const validateFormData = async (value, type) => {
     try {
@@ -209,9 +212,7 @@ const TraineeList = () => {
   useEffect(async () => {
     try {
       setLoading(true);
-      const response = await getTrainees(
-        { variables: { limit: limitSkipValue.limit, skip: limitSkipValue.skip } },
-      );
+      const response = await getTrainees();
       const { data: { getAllTrainees: { result: { documents, userData } } } } = response;
       setLoading(false);
       setDataLength(userData.length);
