@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -8,33 +8,42 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { useMutation } from '@apollo/client';
 
 import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
+import { DELETE_TRAINEE } from '../../mutation';
+import { GET_TRAINEES } from '../../query';
 
 const RemoveDialog = (props) => {
   const {
-    open, onClose, onDelete, actionState,
+    open, onClose, onDelete, actionState, page, dataLength, handlePageNavigation,
   } = props;
+
+  const [loading, setLoading] = useState(false);
 
   const openSnackBar = useContext(SnackBarContext);
 
-  const handleDeleteClick = () => {
-    let message;
-    let status;
+  const [removeTrainee] = useMutation(DELETE_TRAINEE, { refetchQueries: [GET_TRAINEES] });
 
-    const date1 = new Date('14 Feb 2019');
-    const date2 = new Date(actionState.createdAt);
-
-    if (date1 <= date2) {
-      message = 'This is a success message!';
-      status = 'success';
-    } else if (date1 > date2) {
-      message = 'This is an error message!';
-      status = 'error';
+  const handleDeleteClick = async () => {
+    try {
+      setLoading(true);
+      await removeTrainee(
+        { variables: { id: actionState.originalId } },
+      );
+      setLoading(false);
+      onClose();
+      openSnackBar('Trainee deleted successfully!', 'success');
+      if (dataLength === 1 && page > 0) {
+        handlePageNavigation(null, page - 1);
+      }
+      onDelete();
+    } catch (error) {
+      setLoading(false);
+      onClose();
+      openSnackBar(error.message, 'error');
     }
-
-    openSnackBar(message, status);
-    onDelete();
   };
 
   return (
@@ -46,7 +55,7 @@ const RemoveDialog = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleDeleteClick} variant="contained">Delete</Button>
+          <LoadingButton loading={loading} variant="contained" onClick={handleDeleteClick}>Delete</LoadingButton>
         </DialogActions>
       </Dialog>
     </div>
@@ -58,6 +67,9 @@ RemoveDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   actionState: PropTypes.objectOf(PropTypes.string).isRequired,
+  page: PropTypes.number.isRequired,
+  dataLength: PropTypes.number.isRequired,
+  handlePageNavigation: PropTypes.func.isRequired,
 };
 
 export default RemoveDialog;
