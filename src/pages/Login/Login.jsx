@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
-  Grid, Paper, Avatar, TextField, Button,
+  Grid, Paper, Avatar, TextField,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { styles } from './style';
 import { loginFormValidationSchema } from '../../validations/validation';
 import { hasErrors, isTouched } from './helper';
+import { callAPi } from '../../libs/utils/api';
+import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const Login = () => {
   const initialState = {
@@ -23,7 +26,11 @@ const Login = () => {
     errors: {},
   };
 
+  const history = useHistory();
+  const openSnackBar = useContext(SnackBarContext);
+
   const [loginFormData, setLoginFormData] = useState(initialState);
+  const [loading, setLoading] = useState(false);
 
   const validateLoginFormData = async (value, type) => {
     try {
@@ -62,6 +69,19 @@ const Login = () => {
   const handleBlur = (event) => {
     const { value, name: type } = event.target;
     validateLoginFormData(value, type);
+  };
+
+  const handleClick = async () => {
+    try {
+      setLoading(true);
+      const data = await callAPi(loginFormData.email, loginFormData.password);
+      setLoading(false);
+      window.localStorage.setItem('token', data.token);
+      history.push('/trainee');
+    } catch (error) {
+      setLoading(false);
+      openSnackBar(error.message, 'error');
+    }
   };
 
   console.log('loginFormData', loginFormData);
@@ -124,11 +144,9 @@ const Login = () => {
           error={(loginFormData.errors.password && loginFormData.touched.password)}
           helperText={loginFormData.touched.password && loginFormData.errors.password}
         />
-        <Link to="/trainee" style={{ color: 'white', textDecoration: 'none' }}>
-          <Button variant="contained" disabled={!(!hasErrors(loginFormData) && isTouched(loginFormData))} fullWidth sx={{ mt: '2.4rem' }}>
-            Sign In
-          </Button>
-        </Link>
+        <LoadingButton loading={loading} variant="contained" disabled={!(!hasErrors(loginFormData) && isTouched(loginFormData))} onClick={handleClick} fullWidth sx={{ mt: '2.4rem' }}>
+          Sign In
+        </LoadingButton>
       </Paper>
     </Grid>
   );

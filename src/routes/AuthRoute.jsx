@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 import { AuthLayout } from '../layouts';
 
 const AuthRoute = ({ exact, path, component: Component }) => (
-  <Route exact={exact} path={path} render={() => <AuthLayout><Component /></AuthLayout>} />
+  !window.localStorage.getItem('token')
+    ? <Route exact={exact} path={path} render={() => <AuthLayout><Component /></AuthLayout>} />
+    : (
+      <Route>
+        <Redirect to="/trainee" />
+      </Route>
+    )
 );
 
 AuthRoute.defaultProps = {
