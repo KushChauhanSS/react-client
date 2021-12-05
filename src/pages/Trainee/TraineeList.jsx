@@ -10,6 +10,7 @@ import { GenericTable } from '../../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 import { GET_TRAINEES } from './query';
+import { UPDATE_TRAINEE_SUB, DELETE_TRAINEE_SUB } from './subscription';
 
 const getFormattedDate = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
@@ -76,9 +77,16 @@ const TraineeList = () => {
 
   const history = useHistory();
 
-  const [getTrainees] = useLazyQuery(GET_TRAINEES, {
+  const [getTrainees, { subscribeToMore }] = useLazyQuery(GET_TRAINEES, {
     variables: { limit: limitSkipValue.limit, skip: limitSkipValue.skip },
     fetchPolicy: 'cache-and-network',
+    onCompleted: (data) => {
+      const { getAllTrainees: { result: { documents, userData } } } = data;
+      setLoading(false);
+      setDataLength(userData.length);
+      setCount(documents);
+      setTableData(userData);
+    },
   });
 
   const validateFormData = async (value, type) => {
@@ -151,7 +159,7 @@ const TraineeList = () => {
   };
 
   const handleEditDialogSubmit = () => {
-    setReload((prev) => !prev);
+    // setReload((prev) => !prev);
     console.log('Edited Item', { name: actionState.name, email: actionState.email });
   };
 
@@ -178,7 +186,7 @@ const TraineeList = () => {
   };
 
   const handleDelete = () => {
-    setReload((prev) => !prev);
+    // setReload((prev) => !prev);
     console.log('Deleted Item', actionState);
   };
 
@@ -209,15 +217,64 @@ const TraineeList = () => {
     setLimitSkipValue({ ...limitSkipValue, skip: newPage * limitSkipValue.limit });
   };
 
+  useEffect(() => {
+    subscribeToMore({
+      document: UPDATE_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const { getAllTrainees: { result: { userData } } } = prev;
+        const { data: { traineeUpdated: { result } } } = subscriptionData;
+        const updatedRecord = userData.map((record) => {
+          if (record.originalId === result.originalId) {
+            return {
+              ...record,
+              ...result,
+            };
+          }
+          return record;
+        });
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            result: {
+              ...prev.getAllTrainees.result,
+              userData: {
+                ...prev.getAllTrainees.result.userData,
+                ...updatedRecord,
+              },
+            },
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: DELETE_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const { getAllTrainees: { result: { userData } } } = prev;
+        const { data: { traineeDeleted } } = subscriptionData;
+        const deletedRecord = userData.filter(
+          (record) => record.originalId !== traineeDeleted.originalId,
+        );
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            result: {
+              ...prev.getAllTrainees.result,
+              userData: {
+                ...deletedRecord,
+              },
+            },
+          },
+        };
+      },
+    });
+  }, []);
+
   useEffect(async () => {
     try {
       setLoading(true);
-      const response = await getTrainees();
-      const { data: { getAllTrainees: { result: { documents, userData } } } } = response;
-      setLoading(false);
-      setDataLength(userData.length);
-      setCount(documents);
-      setTableData(userData);
+      await getTrainees();
     } catch (error) {
       setLoading(false);
       openSnackBar(error.message, 'error');
