@@ -74,9 +74,10 @@ const Login = () => {
   const handleClick = async () => {
     try {
       setLoading(true);
-      const data = await callAPi(loginFormData.email, loginFormData.password);
+      const response = await callAPi('users/create-token', 'post', null, null, { email: loginFormData.email, password: loginFormData.password });
+      const { data: { data: { token } } } = response;
       setLoading(false);
-      window.localStorage.setItem('token', data.token);
+      window.localStorage.setItem('token', token);
       history.push('/trainee');
     } catch (error) {
       setLoading(false);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,7 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import { GenericTable } from '../../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
-import trainees from './data/trainee';
+import { callAPi } from '../../libs/utils/api';
+import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const getFormattedDate = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
@@ -60,6 +61,35 @@ const TraineeList = () => {
   const [order, setOrder] = useState('asc');
   const [page, setPage] = useState(0);
   const [actionState, setActionState] = useState(initialActionState);
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [dataLength, setDataLength] = useState(0);
+  const [limitSkipValue, setLimitSkipValue] = useState({
+    limit: 20,
+    skip: 0,
+  });
+
+  const openSnackBar = useContext(SnackBarContext);
+
+  useEffect(async () => {
+    try {
+      setLoading(true);
+      const response = await callAPi(
+        'users/all',
+        'get',
+        { Authorization: window.localStorage.getItem('token') },
+        limitSkipValue,
+        null,
+      );
+      const { data: { userData } } = response;
+      setLoading(false);
+      setDataLength(userData.length);
+      setTableData(userData);
+    } catch (error) {
+      setLoading(false);
+      openSnackBar(error.message, 'error');
+    }
+  }, [limitSkipValue]);
 
   const history = useHistory();
 
@@ -168,12 +198,18 @@ const TraineeList = () => {
   // Select table row handler
   const handleSelect = (id) => {
     // navigating to the specific route
-    history.push(`/trainee/${id}`);
+    history.push({
+      pathname: `/trainee/${id}`,
+      state: {
+        response: tableData,
+      },
+    });
   };
 
   // Page change handler
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    setLimitSkipValue({ ...limitSkipValue, skip: newPage * limitSkipValue.limit });
   };
 
   return (
@@ -189,7 +225,7 @@ const TraineeList = () => {
       />
       <GenericTable
         id="61598424fbfdfec65e2dd36b"
-        data={trainees}
+        data={tableData}
         columns={columnsData}
         orderBy={orderBy}
         order={order}
@@ -207,8 +243,10 @@ const TraineeList = () => {
         ]}
         count={100}
         page={page}
-        rowsPerPage={10}
+        rowsPerPage={limitSkipValue.limit}
         onChangePage={handleChangePage}
+        loading={loading}
+        dataLength={dataLength}
       />
       <EditDialog
         open={openEditDialog}

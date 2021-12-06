@@ -6,17 +6,15 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
-import trainees from './data/trainee';
-
 const getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
 const TraineeDetail = (props) => {
-  const { match: { params: { id } } } = props;
+  const { match: { params: { id } }, location: { state: { response } } } = props;
 
-  let person = {};
+  let person;
 
-  trainees.forEach((item) => {
-    if (item.id === id) {
+  response.forEach((item) => {
+    if (item.originalId === id) {
       person = { ...item };
     }
   });
@@ -60,6 +58,15 @@ TraineeDetail.propTypes = {
     params: PropTypes.objectOf(PropTypes.string),
     path: PropTypes.string,
     url: PropTypes.string,
+  }).isRequired,
+  location: PropTypes.shape({
+    key: PropTypes.string,
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+    hash: PropTypes.string,
+    state: PropTypes.shape({
+      response: PropTypes.arrayOf(PropTypes.object),
+    }),
   }).isRequired,
 };
 
