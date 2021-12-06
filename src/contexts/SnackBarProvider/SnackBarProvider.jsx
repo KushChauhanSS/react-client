@@ -41,7 +41,7 @@ const SnackBarProvider = (props) => {
         {children}
       </SnackBarContext.Provider>
       <Stack spacing={2} sx={{ width: '100%' }}>
-        <Snackbar open={snackBarState.open} autoHideDuration={6000} onClose={closeSnackBar}>
+        <Snackbar open={snackBarState.open} autoHideDuration={3000} onClose={closeSnackBar}>
           <Alert
             icon={snackBarState.snackBarStatus === 'success' ? <CheckCircleIcon fontSize="small" /> : <ErrorIcon fontSize="small" />}
             onClose={closeSnackBar}
