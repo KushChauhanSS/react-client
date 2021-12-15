@@ -3,12 +3,13 @@ import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useLazyQuery } from '@apollo/client';
 
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import { GenericTable } from '../../components';
 import { traineeFormValidationSchema } from '../../validations/validation';
-import { callAPi } from '../../libs/utils/api';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { GET_TRAINEES } from './query';
 
 const getFormattedDate = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
@@ -47,7 +48,7 @@ const TraineeList = () => {
   };
 
   const initialActionState = {
-    id: '',
+    originalId: '',
     name: '',
     email: '',
     createdAt: '',
@@ -62,36 +63,23 @@ const TraineeList = () => {
   const [page, setPage] = useState(0);
   const [actionState, setActionState] = useState(initialActionState);
   const [tableData, setTableData] = useState([]);
+  const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [dataLength, setDataLength] = useState(0);
   const [limitSkipValue, setLimitSkipValue] = useState({
     limit: 20,
     skip: 0,
   });
+  const [reload, setReload] = useState(false);
 
   const openSnackBar = useContext(SnackBarContext);
 
-  useEffect(async () => {
-    try {
-      setLoading(true);
-      const response = await callAPi(
-        'users/all',
-        'get',
-        { Authorization: window.localStorage.getItem('token') },
-        limitSkipValue,
-        null,
-      );
-      const { data: { userData } } = response;
-      setLoading(false);
-      setDataLength(userData.length);
-      setTableData(userData);
-    } catch (error) {
-      setLoading(false);
-      openSnackBar(error.message, 'error');
-    }
-  }, [limitSkipValue]);
-
   const history = useHistory();
+
+  const [getTrainees] = useLazyQuery(GET_TRAINEES, {
+    variables: { limit: limitSkipValue.limit, skip: limitSkipValue.skip },
+    fetchPolicy: 'cache-and-network',
+  });
 
   const validateFormData = async (value, type) => {
     try {
@@ -134,6 +122,7 @@ const TraineeList = () => {
   };
 
   const handleSubmit = () => {
+    setReload((prev) => !prev);
     console.log({ name: formValue.name, email: formValue.email, password: formValue.password });
   };
 
@@ -150,7 +139,9 @@ const TraineeList = () => {
   // EditDialog handlers
 
   const handleEditDialogOpen = (data) => {
-    setActionState({ ...actionState, name: data.name, email: data.email });
+    setActionState({
+      ...actionState, originalId: data.originalId, name: data.name, email: data.email,
+    });
     setOpenEditDialog(true);
   };
 
@@ -160,6 +151,7 @@ const TraineeList = () => {
   };
 
   const handleEditDialogSubmit = () => {
+    setReload((prev) => !prev);
     console.log('Edited Item', { name: actionState.name, email: actionState.email });
   };
 
@@ -172,7 +164,11 @@ const TraineeList = () => {
 
   const handleRemoveDialogOpen = (data) => {
     setActionState({
-      ...actionState, id: data.id, name: data.name, email: data.email, createdAt: data.createdAt,
+      ...actionState,
+      originalId: data.originalId,
+      name: data.name,
+      email: data.email,
+      createdAt: data.createdAt,
     });
     setOpenRemoveDialog(true);
   };
@@ -182,6 +178,7 @@ const TraineeList = () => {
   };
 
   const handleDelete = () => {
+    setReload((prev) => !prev);
     console.log('Deleted Item', actionState);
   };
 
@@ -212,6 +209,21 @@ const TraineeList = () => {
     setLimitSkipValue({ ...limitSkipValue, skip: newPage * limitSkipValue.limit });
   };
 
+  useEffect(async () => {
+    try {
+      setLoading(true);
+      const response = await getTrainees();
+      const { data: { getAllTrainees: { result: { documents, userData } } } } = response;
+      setLoading(false);
+      setDataLength(userData.length);
+      setCount(documents);
+      setTableData(userData);
+    } catch (error) {
+      setLoading(false);
+      openSnackBar(error.message, 'error');
+    }
+  }, [limitSkipValue, reload]);
+
   return (
     <>
       <AddDialog
@@ -241,7 +253,7 @@ const TraineeList = () => {
             handler: handleRemoveDialogOpen,
           },
         ]}
-        count={100}
+        count={count}
         page={page}
         rowsPerPage={limitSkipValue.limit}
         onChangePage={handleChangePage}
@@ -250,7 +262,9 @@ const TraineeList = () => {
       />
       <EditDialog
         open={openEditDialog}
-        value={{ name: actionState.name, email: actionState.email }}
+        value={
+          { originalId: actionState.originalId, name: actionState.name, email: actionState.email }
+        }
         onChange={handleEditDialogChange}
         onClose={handleEditDialogClose}
         onSubmit={handleEditDialogSubmit}
@@ -260,6 +274,9 @@ const TraineeList = () => {
         onClose={handleRemoveDialogClose}
         onDelete={handleDelete}
         actionState={actionState}
+        page={page}
+        dataLength={dataLength}
+        handlePageNavigation={handleChangePage}
       />
     </>
   );

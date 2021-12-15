@@ -8,12 +8,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useHistory } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 
 import { styles } from './style';
 import { loginFormValidationSchema } from '../../validations/validation';
 import { hasErrors, isTouched } from './helper';
-import { callAPi } from '../../libs/utils/api';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { LOGIN_USER } from './mutation';
 
 const Login = () => {
   const initialState = {
@@ -31,6 +32,8 @@ const Login = () => {
 
   const [loginFormData, setLoginFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
+
+  const [loginUser] = useMutation(LOGIN_USER);
 
   const validateLoginFormData = async (value, type) => {
     try {
@@ -74,10 +77,12 @@ const Login = () => {
   const handleClick = async () => {
     try {
       setLoading(true);
-      const response = await callAPi('users/create-token', 'post', null, null, { email: loginFormData.email, password: loginFormData.password });
-      const { data: { data: { token } } } = response;
+      const response = await loginUser(
+        { variables: { email: loginFormData.email, password: loginFormData.password } },
+      );
+      const { data } = response;
       setLoading(false);
-      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('token', data.loginUser);
       history.push('/trainee');
     } catch (error) {
       setLoading(false);

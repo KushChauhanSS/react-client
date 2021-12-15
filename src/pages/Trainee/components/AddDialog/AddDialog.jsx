@@ -13,10 +13,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { LoadingButton } from '@mui/lab';
+import { useMutation } from '@apollo/client';
 
 import { hasErrors, isTouched } from '../../helper';
 import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
-import { callAPi } from '../../../../libs/utils/api';
+import { CREATE_TRAINEE } from '../../mutation';
+import { GET_TRAINEES } from '../../query';
 
 const AddDialog = (props) => {
   const {
@@ -33,16 +35,18 @@ const AddDialog = (props) => {
 
   const openSnackBar = useContext(SnackBarContext);
 
+  // const [addTrainee] = useMutation(CREATE_TRAINEE);
+  const [addTrainee] = useMutation(CREATE_TRAINEE, { refetchQueries: [GET_TRAINEES] });
+
   const handleSubmitClick = async () => {
     try {
       setLoading(true);
-      await callAPi(
-        'users',
-        'post',
-        { Authorization: window.localStorage.getItem('token') },
-        null,
+      const { name, email, password } = data;
+      await addTrainee(
         {
-          name: data.name, email: data.email, role: 'head-trainer', password: data.password,
+          variables: {
+            name, email, role: 'head-trainer', password,
+          },
         },
       );
       setLoading(false);
