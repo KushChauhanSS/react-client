@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -12,19 +12,41 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
+import { LoadingButton } from '@mui/lab';
 
 import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
+import { callAPi } from '../../../../libs/utils/api';
 
 const EditDialog = (props) => {
   const {
     open, value, onChange, onClose, onSubmit,
   } = props;
 
+  const [loading, setLoading] = useState(false);
+
   const openSnackBar = useContext(SnackBarContext);
 
-  const handleSubmitClick = () => {
-    openSnackBar('This is a success message!', 'success');
-    onSubmit();
+  const handleSubmitClick = async () => {
+    try {
+      setLoading(true);
+      await callAPi(
+        'users',
+        'put',
+        { Authorization: window.localStorage.getItem('token') },
+        null,
+        {
+          originalId: value.originalId, name: value.name, email: value.email,
+        },
+      );
+      setLoading(false);
+      onClose();
+      openSnackBar('Trainee edited successfully', 'success');
+      onSubmit();
+    } catch (error) {
+      setLoading(false);
+      onClose();
+      openSnackBar('Trainee edited successfully', 'error');
+    }
   };
 
   return (
@@ -77,7 +99,7 @@ const EditDialog = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSubmitClick} variant="contained">Submit</Button>
+          <LoadingButton loading={loading} variant="contained" onClick={handleSubmitClick}>Submit</LoadingButton>
         </DialogActions>
       </Dialog>
     </div>
